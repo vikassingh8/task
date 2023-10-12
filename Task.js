@@ -1,91 +1,107 @@
-// Quetion no.1
-// const prime=(num)=>{
-//     if(num<=1) return false
-//     for(let i=2;i*i<=num;i++){
-//         if(num%i===0) return false
-//     }
-//     return true
-// }
-// const fac=(number)=>{
-//     let renum=parselnt(number.tostring().split("").reverse().join())
-//     let prmfac=[]
-//     for(let i=2;i<=renum;i++){
-//         while(renum%i===0 && prime(i)){
-//             prmfac.push(i)
-//             renum=Math.floor(renum/i)
-//         }
-//     }
-//     return prmfac.length>0?["yes",prmfac]:"no"
-// }
+// Q1: 
 
-
-
-// Quetion no 2
-// const anag=(str)=>{
-//     const anagrp={}
-//     for(let word of str){
-//         let key=[...word].sort().join("")
-//         anagrp[key]=anagrp[key] || []
-//         anagrp[key].push(word)
-//     }
-//     return Object.values(anagrp).reverse()
-// }
-// const ans=anag(["eat","tea","tan","ate","nat","bat"])
-// console.log(ans)
-
-
-// que 4
-// const max=(num)=>{
-//     if(!num || num.length===0){
-//         return "0"
-//     }
-//     num.sort((a,b)=>a-b)
-//     if(num[0]===0){
-//         return "0"
-//     }
-//     return num.join("")
-// }
-// console.log(max([10,2]))
-
-// que -3
-
-// const word=(s,wordarray)=>{
-//     let n=s.length
-//     let js=new Array(n+1).fill(false)
-//     js[0]=true
-//     for(let i=1;i<=n;i++){
-//         for(let j=0;j<i;j++){
-//             if(js[j]&& wordarray.includes(s.substring(j,i))){
-//                 js[i]=true
-//                 break
-//             }
-//         }
-//     }
-//     return  js[n]
-// }
-// console.log(word("leetcode",["leet","code"]))
-
-
-
-// que n0 -5
-
-
-
-const larg=(nums,k)=>{
-    const par=(arr,low,high)=>{
-        const num=arr[high]
-        let i=low
-        for(let j=low;j<high;j++)
-        if(arr[j]>=num) [arr[i],arr[j]]=[arr[j],arr[i]],i++
-        [arr[i],arr[high]]=[arr[high],arr[i]];
-        return i
+const isPrime= (p) => {
+    if(p <= 1)
+    return false;
+    for(let i=2; i*i <= p; i++){
+        if(p % i === 0)
+            return false;
     }
-    const sel=(arr,low,high,k)=>
-        low===high?arr[low]:
-        ((p=>k===p ?arr[p]:k<p?
-        sel(arr,low,p-1,k):
-        sel(arr,p+1,high,k)))
-        par(arr,low,high)
-        return sel(nums,0,nums.length-1,k-1)
+    return true;
+};
+
+const reverseChecker =(x)=> {
+    let reversed= parseInt(x.toString().split("").reverse().join(""));
+    const primeFact = [];
+    
+    for(let i=2; i<= reversed; i++){
+        while(reversed % i === 0 && isPrime(i) ){
+            primeFact.push(i);
+            reversed = Math.floor(reversed/ i);
+        }
+    }
+    return primeFact.length > 0 ? ['yes', primeFact] : 'No';
+    
+};
+let ans= reverseChecker(123);
+console.log(ans);
+
+
+//Q2: 
+
+const anagram = (n) => {
+    const group= {};
+    
+    for(const word of n){
+        const k= [...word].sort().join('');
+        group[k]= group[k] || [];
+        group[k].push(word);
+    }
+    return Object.values(group);
 }
-console.log([10,4,5,6],8)
+
+let ans = anagram(["eat","tea","tan","ate","nat","bat"]);
+console.log(ans);
+
+Q3: 
+
+function wordSplit(p, arr){
+    const n= p.length;
+    const q= new Array(n + 1). fill(false);
+    q[0]= true;
+    
+    for(let i=1; i<=n; i++){
+        for(let j=0; j<i; j++){
+            if(q[j] && arr.includes(s.substring(j,i)) ){
+                q[i]= true;
+                break;
+            }
+        }
+    }
+    return q[n];
+}
+let s = "leetcode"; 
+let arr = ["leet","code"];
+
+console.log(wordSplit(s,arr));
+
+Q4: 
+
+function max(n){
+    if( !n  || n.length ===0){
+        return '0' ;  
+        }
+        n.sort((a,b)=>
+        `${b}${a}` - `${a}${b}`);
+        if(n[0] === 0){
+            return '0';
+        }
+        return n.join('');
+};
+let arr = [10,2];
+
+console.log(max(arr));
+
+Q5: 
+
+function largest(n, k) {
+    const part = (arr, low, high) => {
+      const pivot = arr[high];
+      let i = low;
+      for (let j = low; j < high; j++)
+        if (arr[j] >= pivot) [arr[i], arr[j]] = [arr[j], arr[i]], i++;
+      [arr[i], arr[high]] = [arr[high], arr[i]];
+      return i;
+    };
+  
+    const select = (arr, low, high, k) => low === high ? arr[low] : (
+      (p => k === p ? arr[p] : k < p ? select(arr, low, p - 1, k) : select(arr, p + 1, high, k))
+    )(part(arr, low, high));
+  
+    return select (n, 0, n.length - 1, k - 1);
+  }
+  
+  // Example usage:
+  const n = [10, 4, 12, 9, 87, 34];
+  const k = 2;
+  console.log(largest(n, k));
